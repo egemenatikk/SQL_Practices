@@ -1,0 +1,32 @@
+Table: Seat
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| student     | varchar |
++-------------+---------+
+id is the primary key column for this table.
+Each row of this table indicates the name and the ID of a student.
+id is a continuous increment.
+ 
+
+Write an SQL query to swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped.
+
+Return the result table ordered by id in ascending order.
+
+------------------------------------------------------------------------------------------
+********* Nice Code *********
+SQL Query
+
+SELECT s1.id, s2.student
+FROM Seat s1, Seat s2
+WHERE s1.id MOD 2 = 1
+AND (s1.id = s2.id - 1 OR (s1.id = (SELECT MAX(s3.id) FROM Seat s3) AND s1.id = s2.id))
+UNION
+SELECT s4.id, s5.student
+FROM Seat s4, Seat s5
+WHERE s4.id MOD 2 = 0
+AND (s4.id = s5.id + 1)
+ORDER BY id ASC
+;

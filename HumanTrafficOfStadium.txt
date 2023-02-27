@@ -1,0 +1,39 @@
+Table: Stadium
+
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| visit_date    | date    |
+| people        | int     |
++---------------+---------+
+visit_date is the primary key for this table.
+Each row of this table contains the visit date and visit id to the stadium with the number of people during the visit.
+No two rows will have the same visit_date, and as the id increases, the dates increase as well.
+ 
+
+Write an SQL query to display the records with three or more rows with consecutive id's, and the number of people is greater than or equal to 100 for each.
+
+Return the result table ordered by visit_date in ascending order.
+
+--------------------------------------------------------------------------------
+
+SQL Query
+
+SELECT s1.id, s1.visit_date, s1.people
+FROM Stadium s1
+WHERE ((s1.id) IN (SELECT s2.id FROM Stadium s2 WHERE s2.people >= 100) AND (s1.id + 1) IN (SELECT s3.id FROM Stadium s3 WHERE s3.people >= 100) AND (s1.id + 2) IN (SELECT s4.id FROM Stadium s4 WHERE s4.people >= 100))
+OR ((s1.id) IN (SELECT s5.id FROM Stadium s5 WHERE s5.people >= 100) AND (s1.id + 1) IN (SELECT s6.id FROM Stadium s6 WHERE s6.people >= 100) AND (s1.id - 1) IN (SELECT s7.id FROM Stadium s7 WHERE s7.people >= 100))
+OR ((s1.id) IN (SELECT s8.id FROM Stadium s8 WHERE s8.people >= 100) AND (s1.id - 1) IN (SELECT s9.id FROM Stadium s9 WHERE s9.people >= 100) AND (s1.id - 2) IN (SELECT s10.id FROM Stadium s10 WHERE s10.people >= 100))
+;
+
+
+--------------------------------------------------------------------------------
+
+SELECT s1.id, s1.visit_date, s1.people
+FROM Stadium s1
+WHERE s1.people >= 100
+AND (((s1.id + 1) IN (SELECT s3.id FROM Stadium s3 WHERE s3.people >= 100) AND (s1.id + 2) IN (SELECT s4.id FROM Stadium s4 WHERE s4.people >= 100))
+OR ((s1.id + 1) IN (SELECT s6.id FROM Stadium s6 WHERE s6.people >= 100) AND (s1.id - 1) IN (SELECT s7.id FROM Stadium s7 WHERE s7.people >= 100))
+OR ((s1.id - 1) IN (SELECT s9.id FROM Stadium s9 WHERE s9.people >= 100) AND (s1.id - 2) IN (SELECT s10.id FROM Stadium s10 WHERE s10.people >= 100)))
+;
